@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Finder search</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <form action="/" method="POST" autocomplete="off">
+            <div class="Search_Box">
+                <button type="search" style=" 
+        position: absolute;
+        background-color: #fff;
+        border: none;
+        margin: 10px;
+        cursor: pointer;" id="Button">
+            <img src="https://img.icons8.com/android/24/000000/search.png"/>
+        </button>
+                <input list="suggest" type="search" placeholder="Type to search" name="query" id="query" autocomplete="off" oninput="getSuggest()">
+                <datalist id="suggest"> 
+               </datalist>
+            </div>
+        </form>
+     
+
+    </div>
+    <script src="js/suggestion.js "></script>
+</body>
+
+</html>
