@@ -4,7 +4,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.List;
+import java.util.List;  
 import java.util.ArrayList;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -53,7 +53,7 @@ public class Index {
         }
 
         public void print(Database db,String name) {
-            System.out.print(gettf() + " " + getDoc_num());
+            //System.out.print(gettf() + " " + getDoc_num());
             db.insertFreqs(name, getDoc_num() ,gettf());
         }
 
@@ -67,35 +67,21 @@ public class Index {
         public void print(Database db) {
             for (String name : Detials.keySet()) {
                 String key = name.toString();
-                Vector<Help_data> value = Detials.get(name);
-                System.out.print(key + " ");
+                Vector<Help_data> value = Detials.get(name);           
+                //System.out.print(key + " ");
                 for (int i = 0; i < value.size(); i++) {
                     value.get(i).print(db,key);
-                    System.out.print("    ");
+                    
+                    //System.out.print("    ");
                 }
-                System.out.println();
+                //System.out.println();
             }
             // System.out.println();
 
         }
 
-        public void insertIntoDatabase() {
-            Database db = new Database();
-            for (String name : Detials.keySet()) {
-                String key = name.toString();
-                Vector<Help_data> value = Detials.get(name);
-                int TF, noOfDocument;
-                for (int i = 0; i < value.size(); i++) {
-                    TF = value.get(i).gettf();
-                    noOfDocument = value.get(i).getDoc_num();
-                    db.insertFreqs(key, noOfDocument, TF);
-                }
-
-            }
-
-        }
         /*  insert used to check stop words , steeming , Tf , etc............  */
-        public void insert(Document d, int Current_doc,Database db) throws IOException {
+        public void insert(Document d, int Current_doc,int end,Database db) throws IOException {
             
             Document document = d;
             String description ="";
@@ -104,25 +90,12 @@ public class Index {
                  {
                     String line;
                     title = "TITLE";
-                    // try (Stream<String> lines = Files.lines(Paths.get("URLs.txt"))) {
-                    //     line = lines.skip(Current_doc).findFirst().get();
-                    //     title=line;
-                       
-                    // } catch (IOException e) {
-                    //     System.out.println(e);
-                    // }
+                    
                  }
                 
                  if(document.select("meta[name=description]").isEmpty())
                  {
-                    // String line;
-                    // try (Stream<String> lines = Files.lines(Paths.get("URLs.txt"))) {
-                    //     line = lines.skip(Current_doc).findFirst().get();
-                    //     description=line;
-                       
-                    // } catch (IOException e) {
-                    //     System.out.println(e);
-                    // }
+                    
                     description = "DESCRIPTION";
                  }
                  else{
@@ -130,6 +103,8 @@ public class Index {
                  }
 
             
+                 
+            db.insertURLs(Current_doc,end,title,description);
          
             for (String Html_tags : Init_Score.keySet()) {
                 int tf = 1;
@@ -189,8 +164,6 @@ public class Index {
                 }
 
             }
-            
-            //db.updateURLs(Current_doc,title, description);
 
         }
 
@@ -429,14 +402,14 @@ public class Index {
 
         Indexer_test ob = new Indexer_test();
         Database db = new Database();
-        //db.insertURLs();
+    
         
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 4490; i++) {
 
-            File input = new File(i + ".txt");
+            File input = new File("C/"+ i + ".txt");
             Document doc = Jsoup.parse(input, "UTF-8");
-            ob.insert(doc, i,db);
+            ob.insert(doc, i,4490,db);                          // Set the third parameter by the End Index
 
         }
 
